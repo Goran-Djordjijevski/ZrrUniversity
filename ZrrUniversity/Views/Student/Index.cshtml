@@ -10,7 +10,19 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
+
     <tr>
+        <th>
+            @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+        </th>
+        <th>First Name</th>
+        <th>
+            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.DateSortParm })
+        </th>
+        <th></th>
+    </tr>
+
+    @*<tr>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
         </th>
@@ -21,16 +33,18 @@
             @Html.DisplayNameFor(model => model.EnrollmentDate)
         </th>
         <th></th>
-    </tr>
+    </tr>*@
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.EnrollmentDate)
         </td>
