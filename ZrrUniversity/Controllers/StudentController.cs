@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ZrrUniversity.DataAccessLayer;
 using ZrrUniversity.Models;
+using PagedList;
 
 namespace ZrrUniversity.Controllers
 {
@@ -16,10 +17,22 @@ namespace ZrrUniversity.Controllers
         private UniversityContext db = new UniversityContext();
 
         // GET: Student
-        public ActionResult Index(string sortOrder, string searchString)
+        public ActionResult Index(string sortOrder, string searchString, string currentFilter, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
 
             var students = from s in db.Students
                            select s;
@@ -45,7 +58,10 @@ namespace ZrrUniversity.Controllers
                     break;
             }
 
-            return View(students.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            return View(students.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Student/Details/5
